@@ -1,0 +1,71 @@
+﻿@model NaveMap.UI.Models.NavigationViewModel
+
+@{
+    ViewData["Title"] = "Navigate";
+}
+
+<h3>Navegação</h3>
+
+<form method="post" style="font-size: 14px;">
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+
+    <div style="margin-bottom: 5px;">
+        <label asp-for="CoordinateMap"></label><br />
+        <input asp-for="CoordinateMap" style="text-transform: uppercase" class="form-control" />
+        <span style="font-size: 10px; color: red;" asp-validation-for="CoordinateMap"></span>
+        @if (ViewData["ValidationError01"] != null)
+        {
+            <div style="font-size:10px; font-weight: bold; color: red;">
+                <label>Erro: </label>@ViewData["ValidationError01"].ToString()
+            </div>
+        }
+    </div>
+
+    <div class="row ">
+        @for (int i = 0; i < 2; i++)
+        {
+            <div class="col" style="margin-top:10px;">
+
+                <h5>Sonda @i</h5>
+
+                <div style="margin-bottom: 5px;">
+                    <label asp-for="ListNaves[i].CoordinateRef"></label><br />
+                    <input asp-for="ListNaves[i].CoordinateRef" style="text-transform: uppercase" class="form-control" />
+                    <span style="font-size: 10px; color: red;" asp-validation-for="ListNaves[i].CoordinateRef"></span>
+                    @if (ViewData["ValidationError02"] != null && Convert.ToInt32(ViewData["ValidationError02"].ToString().Split("-")[0]) == i)
+                    {
+                        <div style="font-size:10px; font-weight: bold; color: red;">
+                            <label>Erro: </label>@ViewData["ValidationError02"].ToString().Split("-")[1]
+                        </div>
+                    }
+                </div>
+
+                <div style="margin-bottom: 5px;">
+                    <label asp-for="ListNaves[i].CoordinateNav"></label><br />
+                    <input asp-for="ListNaves[i].CoordinateNav" style="text-transform: uppercase" class="form-control" />
+                    <span style="font-size: 10px; color: red;" asp-validation-for="ListNaves[i].CoordinateNav"></span>
+                    @if (ViewData["ValidationError03"] != null && Convert.ToInt32(ViewData["ValidationError03"].ToString().Split("-")[0]) == i)
+                    {
+                        <div style="font-size:10px; font-weight: bold; color: red;">
+                            <label>Erro: </label>@ViewData["ValidationError03"].ToString().Split("-")[1]
+                        </div>
+                    }
+                </div>
+
+
+                @if (Model != null && !string.IsNullOrEmpty(Model.ListNaves[i].CoordinateFinal))
+                {
+                    <br/>
+                    <b>Posição final da sonda: </b>@Model.ListNaves[i].CoordinateFinal
+                }
+            </div>
+        }
+    </div>
+
+    <div style="margin-bottom: 20px; margin-top: 20px;">
+        <button class="btn btn-primary" type="submit">Navegar</button>
+        <button class="btn btn-primary" type="reset">Limpar dados</button>
+    </div>
+</form>
